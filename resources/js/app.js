@@ -1,14 +1,18 @@
 /*****************************************************
  * Global variables
  *****************************************************/
-let audio = new Audio('./resources/sounds/WON.mp3');
+let won = new Audio('./resources/sounds/WON.mp3');
+let select = new Audio('./resources/sounds/click.mp3');
+let match = new Audio('./resources/sounds/match.mp3');
 
 /*****************************************************
  * declare arrays
- *****************************************************/const game2 = [].slice.call(document.querySelectorAll('.game .tile'));
+ *****************************************************/
+const game2 = [].slice.call(document.querySelectorAll('.game .tile'));
 
     let array8 = [];
     let array16 = [];
+
 
     /*****************************************************
      * general purpose functions
@@ -42,6 +46,8 @@ let audio = new Audio('./resources/sounds/WON.mp3');
     function initiate(targetDomElement, arr, gameNumber, numOfTiles) {
         clearBoard(targetDomElement);
         resetValues();
+        won.pause();
+        won.currentTime = 0;
         arr = random(numOfTiles, arr);
         generateBoard(targetDomElement, renderBoard8, arr, gameNumber);
         targetDomElement.forEach(el => el.addEventListener('click', gameProcess));
@@ -125,8 +131,10 @@ function generateBoardTiles(arr) {
         if (!flipped) {
             flipped = true;
             first = this;
+            select.play();
             return
         }
+        select.play();
         flipped = false;
         second = this;
         console.log(first.dataset.index);
@@ -141,11 +149,13 @@ function generateBoardTiles(arr) {
 
     function disable() {
         let check = [... document.querySelectorAll('.game .tile')].length / 2;
+        match.play();
         first.removeEventListener('click', gameProcess);
         second.removeEventListener('click', gameProcess);
         counter++;
         if (counter > (check - 1)) {
-            audio.play();
+            won.play();
+            counter = 0;
         }
         resetValues();
         console.log('counter:' + counter);
@@ -171,10 +181,14 @@ function generateBoardTiles(arr) {
  *****************************************************/
 
     const game1 = [].slice.call(document.querySelectorAll('.game .tile'));
+    initiate(game1, array8, 1, 8);
 
-    //const game2 = [].slice.call(document.querySelectorAll('.game')[1].querySelectorAll('.tile'));
     document.getElementById('game1-btn').addEventListener('click', initiate.bind(this, game1, array8, 1, 8, false));
-    document.getElementById('game2-btn').addEventListener('click', initiate.bind(this, game1, array16, 2, 8, false));
+    document.getElementById('game2-btn').addEventListener('click', initiate.bind(this, game1, array8, 2, 8, false));
+    document.getElementById('game3-btn').addEventListener('click', initiate.bind(this, game1, array8, 3, 8, false));
+    document.getElementById('game4-btn').addEventListener('click', initiate.bind(this, game1, array8, 4, 8, false));
+    document.getElementById('game5-btn').addEventListener('click', initiate.bind(this, game1, array8, 5, 8, false));
+    document.getElementById('game6-btn').addEventListener('click', initiate.bind(this, game1, array8, 6, 8, false));
 
 
 

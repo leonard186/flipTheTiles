@@ -6,7 +6,76 @@
 
 body {
     height: 100vh;
+    background: #8D9532 url('../images/tree.png');
 }
+
+
+/*****************************************************************
+navigation section
+*****************************************************************/
+
+nav {
+    max-width: 1100px;
+    margin: 5px auto 20px auto;
+    position: relative;
+    height: 500px;
+    background: #422C18 url('../images/wood.png');
+    border-radius: 20px;
+}
+
+nav img {
+    height: 500px;
+    width: 500px;
+    margin: 50px;
+    position: absolute;
+    left: -100px;
+}
+
+nav h1 {
+    font-size: 45px;
+    position: absolute;
+    color: #ffffff;
+    top: 20%;
+    left: 40%;
+    z-index: 2;
+}
+
+.menu *{
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 100px;
+    color: #fff;
+    text-align: center;
+    background-color: #DD5449;
+    position: absolute;
+    border-radius:50px;
+    height: 100px;
+    width: 100px;
+    z-index: 1;
+    transform: scale(1);
+    transition: background-color 0.25s, transform 0.25s;
+}
+
+.menu *:hover {
+    background-color: #fcc044;
+    color: #422C18;
+    transform: scale(0.97);
+}
+
+.menu a:first-child {
+    top: 20%;
+    left: 70%;
+}
+
+.menu a:last-child {
+    top: 63%;
+    left: 70%;
+}
+
+/*****************************************************************
+match game section
+*****************************************************************/
 
 .flip-game {
     width: 100%;
@@ -23,6 +92,19 @@ body {
 .game-buttons * {
     margin: 1%;
     width: 90%;
+    background-color: #422C18;
+    color: #ffffff;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    transform: scale(1);
+    transition: transform 0.2s;
+}
+
+.game-buttons *:hover, .game-buttons *:active {
+    transform: scale(.97);
+    cursor: pointer;
+
 }
 
 .game {
@@ -49,6 +131,10 @@ body {
     transition: transform 0.2s;
 }
 
+.tile:hover {
+    cursor: pointer;
+}
+
 .tile.flip {
     transform: rotateY(180deg);
 }
@@ -69,6 +155,16 @@ body {
     transform: rotateY(180deg);
 }
 
+@media only screen and (max-width: 800px) {
+    nav h1 {
+        top: 5%;
+    }
+
+    nav img {
+        left: -150px;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .game {
         width: 400px;
@@ -80,9 +176,37 @@ body {
         flex-direction: column;
         align-items: center;
     }
+
+    nav {
+        height: 300px;
+    }
+
+    nav img {
+        height: 320px;
+        width: 320px;
+        margin: 20px;
+        left: -100px;
+    }
+
+    .menu *{
+        height: 75px;
+        width: 75px;
+        line-height: 75px;
+        font-size: 13px;
+    }
+
+    .menu a:first-child {
+        top: 53%;
+        left: 40%;
+    }
+
+    .menu a:last-child {
+        top: 53%;
+        left: 70%;
+    }
 }
 
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 450px) {
     .game {
         width: 300px;
         height: 300px;
@@ -92,4 +216,27 @@ body {
         width: 300px;
         flex-direction: column;
     }
+
+    nav img {
+        top: 10%;
+        left: -80px;
+        height: 300px;
+        width: 300px;
+    }
+
+    nav h1 {
+        left: 28%;
+        font-size: 40px;
+    }
+
+    .menu a:first-child {
+        top: 30%;
+        left: 65%;
+    }
+
+    .menu a:last-child {
+        top: 63%;
+        left: 65%;
+    }
 }
+
