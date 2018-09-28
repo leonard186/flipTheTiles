@@ -1,14 +1,28 @@
+/*****************************************************************
+animations
+*****************************************************************/
+
+@-webkit-keyframes slide-down {
+    0% { opacity: 0; -webkit-transform: translateY(-100%); }
+    100% { opacity: 1; -webkit-transform: translateY(0); }
+}
+@-moz-keyframes slide-down {
+    0% { opacity: 0; -moz-transform: translateY(-100%); }
+    100% { opacity: 1; -moz-transform: translateY(0); }
+}
+
+/*****************************************************************
+general styling
+*****************************************************************/
+
 * {
     box-sizing: border-box;
 }
-
-
 
 body {
     height: 100vh;
     background: #8D9532 url('../images/tree.png');
 }
-
 
 /*****************************************************************
 navigation section
@@ -89,7 +103,7 @@ match game section
     width: 600px;
 }
 
-.game-buttons * {
+.game-buttons *, #random-game {
     margin: 1%;
     width: 90%;
     background-color: #422C18;
@@ -101,7 +115,11 @@ match game section
     transition: transform 0.2s;
 }
 
-.game-buttons *:hover, .game-buttons *:active {
+#random-game {
+    background-color: #DD5449;
+}
+
+.game-buttons *:hover, .game-buttons *:active, #random-game:hover, #random-game:active {
     transform: scale(.97);
     cursor: pointer;
 
@@ -114,6 +132,7 @@ match game section
     width: 600px;
     height: 600px;
     perspective: 1000px;
+    position: relative;
 }
 
 .tile {
@@ -153,6 +172,41 @@ match game section
 
 .front {
     transform: rotateY(180deg);
+}
+
+
+#message {
+    display: none;
+    transition: animation 0.5s;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    margin: 0 auto;
+    color: #ffffff;
+    opacity: 1;
+    padding: 0 15px;
+    background: rgba(141, 149, 50, 0.9);
+    border-radius: 10px;
+}
+
+.highlight {
+    font-weight: bold;
+    color: #DD5449;
+}
+
+#message h1 {
+    font-size: 35px;
+    padding: 20px 0;
+}
+#message p {
+    padding: 20px 0;
+    font-size: 20px;
+}
+#random-game {
+    margin: 5px 0 25px 0;
 }
 
 @media only screen and (max-width: 800px) {
