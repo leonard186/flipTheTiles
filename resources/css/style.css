@@ -11,6 +11,13 @@ animations
     100% { opacity: 1; -moz-transform: translateY(0); }
 }
 
+@-webkit-keyframes pulsate {
+    0% { transform: scale(1)}
+    50% {transform: scale(1.2)}
+    100% {transform: scale(1)}
+
+}
+
 /*****************************************************************
 general styling
 *****************************************************************/
@@ -87,127 +94,15 @@ nav h1 {
     left: 70%;
 }
 
-/*****************************************************************
-match game section
-*****************************************************************/
-
-.flip-game {
-    width: 100%;
-    margin: 5% auto;
+.pulsate {
+    animation: pulsate;
+    animation-duration: 3s;
 }
 
-.game-buttons {
-    margin: 2% auto;
-    display: flex;
-    justify-content: center;
-    width: 600px;
-}
-
-.game-buttons *, #random-game {
-    margin: 1%;
-    width: 90%;
-    background-color: #422C18;
-    color: #ffffff;
-    padding: 10px 0;
-    border: none;
-    border-radius: 5px;
-    transform: scale(1);
-    transition: transform 0.2s;
-}
-
-#random-game {
-    background-color: #DD5449;
-}
-
-.game-buttons *:hover, .game-buttons *:active, #random-game:hover, #random-game:active {
-    transform: scale(.97);
-    cursor: pointer;
-
-}
-
-.game {
-    margin: 2% auto;
-    display: flex;
-    flex-wrap: wrap;
-    width: 600px;
-    height: 600px;
-    perspective: 1000px;
-    position: relative;
-}
-
-.tile {
-    margin: 5px;
-    width: calc(25% - 10px);
-    height: calc(25% - 10px);
-    position: relative;
-    transform: scale(1);
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-}
-
-.tile:active {
-    transform: scale(0.97);
-    transition: transform 0.2s;
-}
-
-.tile:hover {
+#giraffe:hover {
     cursor: pointer;
 }
 
-.tile.flip {
-    transform: rotateY(180deg);
-}
-
-.front,
-.back {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    position: absolute;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: 5px;
-    border: 2px solid grey;
-}
-
-.front {
-    transform: rotateY(180deg);
-}
-
-
-#message {
-    display: none;
-    transition: animation 0.5s;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
-    z-index: 2;
-    width: 100%;
-    margin: 0 auto;
-    color: #ffffff;
-    opacity: 1;
-    padding: 0 15px;
-    background: rgba(141, 149, 50, 0.9);
-    border-radius: 10px;
-}
-
-.highlight {
-    font-weight: bold;
-    color: #DD5449;
-}
-
-#message h1 {
-    font-size: 35px;
-    padding: 20px 0;
-}
-#message p {
-    padding: 20px 0;
-    font-size: 20px;
-}
-#random-game {
-    margin: 5px 0 25px 0;
-}
 
 @media only screen and (max-width: 800px) {
     nav h1 {
@@ -220,16 +115,6 @@ match game section
 }
 
 @media only screen and (max-width: 600px) {
-    .game {
-        width: 400px;
-        height: 400px;
-    }
-
-    .game-buttons {
-        width: 400px;
-        flex-direction: column;
-        align-items: center;
-    }
 
     nav {
         height: 300px;
@@ -261,15 +146,6 @@ match game section
 }
 
 @media only screen and (max-width: 450px) {
-    .game {
-        width: 300px;
-        height: 300px;
-    }
-
-    .game-buttons {
-        width: 300px;
-        flex-direction: column;
-    }
 
     nav img {
         top: 10%;
