@@ -215,6 +215,27 @@ function mouseHandler(e) {
     }
 }
 
+//touch handle
+function touch2Mouse(e)
+{
+    var theTouch = e.changedTouches[0];
+    var mouseEv;
+
+    switch(e.type)
+    {
+        case "touchstart": mouseEv="mousedown"; break;
+        case "touchend":   mouseEv="mouseup"; break;
+        case "touchmove":  mouseEv="mousemove"; break;
+        default: return;
+    }
+
+    var mouseEvent = document.createEvent("MouseEvent");
+    mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, theTouch.screenX, theTouch.screenY, theTouch.clientX, theTouch.clientY, false, false, false, false, 0, null);
+    theTouch.target.dispatchEvent(mouseEvent);
+
+    e.preventDefault();
+}
+
 
 //animate canvas elements
 function motion() {
@@ -236,7 +257,8 @@ function motion() {
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 document.addEventListener('mousemove', mouseHandler, false);
-//document.addEventListener('touchstart', keyDownHandler, false);
-//document.addEventListener('touchend', keyUpHandler, false);
+document.addEventListener("touchstart", touch2Mouse, true);
+document.addEventListener("touchmove", touch2Mouse, true);
+document.addEventListener("touchend", touch2Mouse, true);
 
 let motionStart = setInterval(motion, 200);
