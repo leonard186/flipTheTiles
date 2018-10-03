@@ -2,10 +2,6 @@
 declare global variables
  *****************************************************************/
 
-//events
-let events = ['keydown', 'keyup', 'mousemove', 'touchstart', 'touchmove', 'touchend'];
-
-
 // dom elements
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
@@ -13,8 +9,8 @@ const context = canvas.getContext('2d');
 let y = canvas.height - 30;
 let x = canvas.width / 2;
 //ball pixel movement /  animation frame
-let dx = 4;
-let dy = -4;
+let dx = 2;
+let dy = -2;
 
 //key press state
 let leftPressed = false;
@@ -36,7 +32,9 @@ let lives = 2;
 let ballCollide = new Audio('../sounds/click.mp3');
 let brickCollide = new Audio('../sounds/collide.mp3');
 let victory = new Audio('../sounds/victory.mp3');
+let won = new Audio('../sounds/WON.mp3');
 let loose = new Audio('../sounds/loose.mp3');
+let died = new Audio('../sounds/died.mp3');
 
 //ball and paddle dimensions
 let ballRad = 10;
@@ -71,20 +69,22 @@ function handleEventListeners(state = true) {
         document.addEventListener('keydown', keyDownHandler, false);
         document.addEventListener('keyup', keyUpHandler, false);
         document.addEventListener('mousemove', mouseHandler, false);
-        document.addEventListener('touchstart', touch2Mouse, true);
-        document.addEventListener('touchmove', touch2Mouse, true);
-        document.addEventListener('touchend', touch2Mouse, true);
+        document.addEventListener('touchstart', touch2Mouse, false);
+        document.addEventListener('touchmove', touch2Mouse, false);
+        document.addEventListener('touchend', touch2Mouse, false);
     } else {
         document.removeEventListener('keydown', keyDownHandler, false);
         document.removeEventListener('keyup', keyUpHandler, false);
         document.removeEventListener('mousemove', mouseHandler, false);
-        document.removeEventListener('touchstart', touch2Mouse, true);
-        document.removeEventListener('touchmove', touch2Mouse, true);
-        document.removeEventListener('touchend', touch2Mouse, true);
+        document.removeEventListener('touchstart', touch2Mouse, false);
+        document.removeEventListener('touchmove', touch2Mouse, false);
+        document.removeEventListener('touchend', touch2Mouse, false);
     }
 }
 
 function reset() {
+    //cancel all event handlers
+    handleEventListeners(false);
     //reset ball position
     x = canvas.width/2;
     y = canvas.height-30;
@@ -98,7 +98,6 @@ function reset() {
             bricks[c][r].state = true;
         }
     }
-    handleEventListeners(false);
 }
 
 /*****************************************************************
@@ -199,12 +198,12 @@ function drawLevel() {
     context.fillText('Level: ' + level, center, 20);
 }
 
-//message render
+//message constructor
 function message(txt) {
     //clear canvas
     context.clearRect(0, 0, canvas.width, canvas.height);
     //set style and text
-    context.font = '32px Arial';
+    context.font = '25px Arial';
     context.fillStyle = 'red';
     let center = (canvas.width - context.measureText(txt).width) / 2;
     context.fillText(txt, center, canvas.height / 2 );
@@ -220,10 +219,18 @@ function drawStartGame() {
 
 //draw victory
 function drawVictory() {
-    let txt = 'Winner! You finished Level ' + level;
-    let next = 'Next level';
-    message(txt);
-    createButton(next)
+    if(level < 7) {
+        let txt = 'Winner! You finished Level ' + level;
+        let next = 'Next level';
+        message(txt);
+        createButton(next);
+    } else if(level === 7) {
+        let txt = 'You are the new Jedi Grand Master';
+        let txtButton = 'Restart';
+        message(txt);
+        createButton(txtButton);
+        won.play();
+    }
 }
 
 //draw game over
@@ -234,7 +241,7 @@ function drawGameOver() {
     createButton(txtButton);
 }
 
-//create button function
+//create button constructor
 function createButton(txt) {
     //remove all active event listeners
     handleEventListeners(false);
@@ -264,20 +271,16 @@ function createButton(txt) {
         console.log('center: ' + center);
         console.log('vertical: ' + vertical);
         console.log('mouse pos x: ' + mousePos.x + '|| mouse pos Y: ' + mousePos.y);
-        console.log( 'is inside: ' + isInside(mousePos, rect));
+        console.log('is inside: ' + isInside(mousePos, rect));
         if (txt === 'Restart' && isInside(mousePos, rect)) {
-            reset();
-            lives = 2;
-            level = 1;
-            dx = 2;
-            dy = -2;
-            motion();
-            handleEventListeners();
-        } else if(txt === 'Start' && isInside(mousePos, rect)) {
+            location.reload();
+        } else if (txt === 'Start' && isInside(mousePos, rect)) {
             gameStart = true;
             motion();
             handleEventListeners();
-        } else if(txt === 'Next level' && isInside(mousePos, rect)){
+            //remove current event listener
+            canvas.removeEventListener('click', listen, false);
+        } else if (txt === 'Next level' && isInside(mousePos, rect)) {
             reset();
             //increase level
             level++;
@@ -285,6 +288,9 @@ function createButton(txt) {
             lives += 1;
             //start the game
             motion();
+            //control level difficulty
+            level === 3 ? dx += 1 : null;
+
             //increase speed
             dx > 0 ? dx += 1 : dx -= 1;
             dy < 0 ? dx -= 1 : dy += 1;
@@ -330,19 +336,19 @@ function collisionControl() {
     }
 
     //collision control with the paddle
+    //if ball is within the canvas
     if(y + dy > canvas.height - ballRad) {
-        if(x > paddleX && x < paddleX + paddleW) {
+        if(x > paddleX && x < paddleX + paddleW) { //if ball hits the paddle
             dy = -dy;
-            ballCollide.play()
-        } else {
-            if(lives > 0) {
-                lives--;
-                x = canvas.width/2;
-                y = canvas.height-30;
-                //dx = 2;
-                //dy = -2;
-                paddleX = (canvas.width-paddleW)/2;
-            } else if(lives === 0){
+            ballCollide.play();
+        } else { //else if ball does not hit the paddle
+            if(lives > 0) {//if there are lives remaining
+                died.play();
+                    lives--;
+                    x = canvas.width/2;
+                    y = canvas.height-30;
+                    paddleX = (canvas.width-paddleW)/2;
+            } else if(lives === 0){ //if there are no lives remaining
                 drawGameOver();
                 loose.play();
             }
@@ -350,7 +356,7 @@ function collisionControl() {
     }
 }
 
-function movePaddle() {
+function movePaddle() { //set paddle in motion
     leftPressed && paddleX > 0 ? paddleX -= 7 : null;
     rightPressed && paddleX < (canvas.width - paddleW) ? paddleX += 7 : null;
 }
@@ -372,7 +378,6 @@ function keyUpHandler(e) {
 function mouseHandler(e) {
     let relativeX = e.clientX - canvas.offsetLeft;
     if(relativeX > (paddleW / 2) && relativeX < canvas.width - (paddleW / 2)) {
-
         paddleX = (relativeX - paddleW / 2);
     }
 }
@@ -428,14 +433,14 @@ function motion() {
     animate();
 };
 
-handleEventListeners();
 function initiate() {
     drawStartGame();
-    if(gameStart === true) {
+    if (gameStart === true) {
         handleEventListeners();
         motion();
+        drawEnd();
+        won.play();
     }
-
 }
 
 initiate();
