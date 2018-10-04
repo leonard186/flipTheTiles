@@ -103,6 +103,30 @@ nav h1 {
     cursor: pointer;
 }
 
+.game-buttons {
+    margin: 2% auto;
+    display: flex;
+    justify-content: center;
+    width: 600px;
+}
+
+.game-buttons *, #random-game {
+    margin: 1%;
+    width: 90%;
+    background-color: #422C18;
+    color: #ffffff;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    transform: scale(1);
+    transition: transform 0.2s;
+}
+
+.game-buttons *:hover, .game-buttons *:active, #random-game:hover, #random-game:active {
+    transform: scale(.97);
+    cursor: pointer;
+}
+
 
 @media only screen and (max-width: 800px) {
     nav h1 {
@@ -143,6 +167,12 @@ nav h1 {
         top: 53%;
         left: 70%;
     }
+
+    .game-buttons {
+        width: 400px;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 @media only screen and (max-width: 450px) {
@@ -167,6 +197,11 @@ nav h1 {
     .menu a:last-child {
         top: 63%;
         left: 65%;
+    }
+
+    .game-buttons {
+        width: 300px;
+        flex-direction: column;
     }
 }
 

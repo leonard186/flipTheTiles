@@ -5,7 +5,6 @@ Breakout section
 #breakout {
     width: 100%;
     margin: 10% 0;
-    padding: 5px;
 }
 
 #canvas {
@@ -24,6 +23,10 @@ Breakout section
     color: #ffffff;
     font-weight: bold;
     font-size: 19px;
+}
+
+#breakout .game-buttons * {
+    display: none;
 }
 
 

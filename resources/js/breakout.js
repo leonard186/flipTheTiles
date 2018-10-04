@@ -23,7 +23,11 @@ let loose = new Audio('../sounds/loose.mp3');
 let died = new Audio('../sounds/died.mp3');
 //dom elements
 const canvas = document.getElementById('canvas');
+const start = document.getElementById('start');
+const restart = document.getElementById('restart');
+const next = document.getElementById('next-level');
 const context = canvas.getContext('2d');
+
 
 /***************************
  Canvas elements
@@ -73,6 +77,13 @@ let lives = 2;
  general purpose functions
  *****************************************************************/
 
+//show hide buttons
+function toggleButtons(button) {
+    button === 'start' ? start.style.display = 'block' : start.style.display = 'none';
+    button === 'restart' ? restart.style.display = 'block' : restart.style.display = 'none';
+    button === 'next' ? next.style.display = 'block' : next.style.display = 'none';
+}
+
 //generate random colors
 let colors = ['purple', 'green', 'red', 'orange', 'blue'];
 let colorsInUse = colors[0];
@@ -102,7 +113,7 @@ function handleEventListeners(state = true) {
 
 function reset() {
     //cancel all event handlers
-    handleEventListeners(false);
+    //handleEventListeners(false);
     //reset ball position
     x = canvas.width / 2;
     y = canvas.height - 30;
@@ -224,34 +235,67 @@ function drawLevel() {
     context.fillText('Level: ' + level, center, 20);
 }
 
-//draw start game
-function drawStartGame() {
-    let txt = 'Start';
-    createButton(txt);
-}
-
 //draw victory
 function drawVictory() {
     if (level < 7) {
         let txt = 'Winner! You finished Level ' + level;
-        let next = 'Next level';
         message(txt);
-        createButton(next);
+        nextLevel();
     } else if (level === 7) {
         let txt = 'You are the new Jedi Grand Master';
-        let txtButton = 'Restart';
         message(txt);
-        createButton(txtButton);
+        restartGame();
+        //createButton(txtButton);
         won.play();
     }
+}
+
+function nextLevel() {
+
+    //remove all active event listeners
+    handleEventListeners(false);
+    toggleButtons('next');
+
+    next.addEventListener('click', function listen() {
+        reset(); //reset parameters
+        level += 1; //increase level
+        lives += 1; //add extra life
+        motion(); //start the game
+        //control level difficulty
+        level === 3 ? dx += 1 : null;
+        //increase speed
+        dx > 0 ? dx += 1 : dx -= 1;
+        dy < 0 ? dx -= 1 : dy += 1;
+        //decrease paddle width
+        paddleW -= 10;
+        next.removeEventListener('click', listen, false); //remove This event listener
+        handleEventListeners(); //activate event listeners for game control
+    })
+}
+
+function restartGame() {
+    handleEventListeners(false);
+    toggleButtons('restart');
+    restart.addEventListener('click', function() {
+        location.reload();
+    })
+}
+
+function startGame() {
+    handleEventListeners(false);
+    toggleButtons('start');
+    start.addEventListener('click', function() {
+        gameStart = true; //allow game to start
+        handleEventListeners(true);
+        motion(); //start the game
+    })
 }
 
 //draw game over
 function drawGameOver() {
     let txt = 'You lost at Level ' + level;
-    let txtButton = 'Restart';
     message(txt);
-    createButton(txtButton);
+    restartGame();
 }
 
 /*****************************************************************
@@ -269,73 +313,6 @@ function message(txt) {
     context.fillText(txt, center, canvas.height / 2);
     //stop animation
     startStopAnimation = true;
-}
-
-//create button constructor
-function createButton(txt) {
-    //remove all active event listeners
-    handleEventListeners(false);
-    //assign canvas positions
-    let center = (canvas.width - context.measureText(txt).width) / 2;
-    let vertical = canvas.height - (canvas.height / 3);
-    //store button position and size
-    let rect = {
-        x: center,
-        y: vertical,
-        width: 120,
-        height: 50
-    };
-
-    //check if pointer is inside area
-    function isInside(pos, rect) {
-        return pos.x > rect.x && pos.x < rect.x + rect.width && pos.y < rect.y + rect.height && pos.y > rect.y
-    }
-
-    canvas.addEventListener('click', function listen(evt) {
-        //track pointer position
-        let mousePos = {
-            x: evt.clientX - canvas.offsetLeft,
-            y: evt.clientY - canvas.offsetTop
-        };
-
-
-        if (txt === 'Restart' && isInside(mousePos, rect)) { //if restart button is displayed
-            location.reload();
-        } else if (txt === 'Start' && isInside(mousePos, rect)) { //if start button is displayed
-            gameStart = true; //allow game to start
-            motion(); //start the game
-            canvas.removeEventListener('click', listen, false); //remove This event listener
-            handleEventListeners(); //activate event listeners for game control
-        } else if (txt === 'Next level' && isInside(mousePos, rect)) {
-            reset(); //reset parameters
-            level++; //increase level
-            lives += 1; //add extra life
-            motion(); //start the game
-            //control level difficulty
-            level === 3 ? dx += 1 : null;
-            //increase speed
-            dx > 0 ? dx += 1 : dx -= 1;
-            dy < 0 ? dx -= 1 : dy += 1;
-            //decrease paddle width
-            paddleW -= 10;
-            canvas.removeEventListener('click', listen, false); //remove This event listener
-            handleEventListeners(); //activate event listeners for game control
-        }
-    }, false);
-    //draw button
-    context.beginPath();
-    context.rect(250, 350, 200, 100);
-    context.fillStyle = '#FFFFFF';
-    context.fillStyle = 'rgba(225,225,225,0.5)';
-    context.fillRect(center, vertical, 120, 50);
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = '#000000';
-    context.stroke();
-    context.closePath();
-    context.font = '20px Arial';
-    context.fillStyle = '#000000';
-    context.fillText(txt, center + 15, vertical + 30);
 }
 
 /*****************************************************************
@@ -467,7 +444,7 @@ function motion() {
  *****************************************************************/
 
 function initiate() {
-    drawStartGame();
+    startGame();
     if (gameStart === true) {
         handleEventListeners();
         motion();
