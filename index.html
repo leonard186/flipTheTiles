@@ -9,31 +9,48 @@
     <link rel="stylesheet" href="./resources/css/reset.css" type="text/css">
     <!-- Custom stylesheet -->
     <link rel="stylesheet" href="./resources/css/style.css" type="text/css">
+    <link rel="stylesheet" href="./resources/css/match.css" type="text/css">
 </head>
 
 <body>
 
-    <!-- Header Section -->
-    <nav>
-        <h1>Kid's zone</h1>
-        <div class="menu">
-            <a href="./resources/pages/match.html">Match Game</a>
-            <a href="./resources/pages/breakout.html">Breakout</a>
+<!-- Header Section -->
+<nav>
+    <h1>Kid's zone</h1>
+    <div class="menu">
+        <a href="./index.html">Match Game</a>
+        <a href="./resources/pages/breakout.html">BreakOut</a>
+    </div>
+    <img id="giraffe" class="pulsate" src="./resources/images/giraffe.png" alt="giraffe">
+</nav>
+
+<!-- Main Content -->
+
+<section class="flip-game">
+
+    <div class="game-buttons">
+        <button id="game1-btn">Animals</button>
+        <button id="game2-btn">Letters</button>
+        <button id="game3-btn">Numbers</button>
+    </div>
+
+    <section class="game" id="game1">
+        <div id="message">
+            <h1>Hurray, you Won!</h1>
+            <div id="stats"></div>
+            <p>The ideal is 24 flips in 24 seconds</p>
+            <button id="random-game">Try a different board</button>
         </div>
-        <img id="giraffe" class="pulsate" src="./resources/images/giraffe.png" alt="giraffe">
-    </nav>
+    </section>
 
-    <!-- Main Content -->
-        <section></section>
-        <section></section>
-        <section></section>
+</section>
 
-    <!-- Footer Section -->
+<!-- Footer Section -->
 
-    <footer></footer>
+<footer></footer>
 
-    <!-- App js -->
-    <script src="./resources/js/match.js"></script>
+<!-- Match js -->
+<script src="./resources/js/match.js"></script>
 </body>
 
 </html>
