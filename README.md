@@ -1,5 +1,5 @@
 # Kids Zone
-This project consists of games that are meant to be played by kids.
+Kids Zone web application consists of two games
 
 * flip the tiles
 * breakout
@@ -10,7 +10,7 @@ This project consists of games that are meant to be played by kids.
 
 ## Description
 
-* **flip the tiles** is a match game with the possibility of choosing from 3 different boards(animal figures, numbers, letters). 
+* **flip the tiles** is a match game with the possibility of choosing from 3 different board types(animal figures, numbers, letters). 
 Every game session gets a unique board and statistics are rendered at completion.
 
 * **breakout** is a game where a paddle is used to hit the ball that destroyes the bricks. The basic functionalities of this game
