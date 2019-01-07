@@ -1,5 +1,5 @@
 # Kids Zone
-Kids Zone web application consists of two games
+Kids Zone consists of two games
 
 * flip the tiles
 * breakout
